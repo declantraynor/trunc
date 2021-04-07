@@ -1,0 +1,21 @@
+services:
+    web: &default
+        build: .
+        depends_on:
+            - redis
+        environment:
+            - TRUNC_EXTERNAL_HOST=http://localhost:5000
+            - TRUNC_PORT=5000
+            - TRUNC_REDIS_HOST=redis
+            - TRUNC_REDIS_PORT=6379
+        ports: 
+            - "5000:5000"
+        volumes:
+            - ".:/go/src/app"
+    redis:
+        image: redis
+    test:
+        build: .
+        command: ["go", "test", "./..."]
+        volumes:
+            - ".:/go/src/app"
